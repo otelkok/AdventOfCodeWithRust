@@ -1,0 +1,1 @@
+//functions and structs used in first part can already solve part2, thus no further code needed
