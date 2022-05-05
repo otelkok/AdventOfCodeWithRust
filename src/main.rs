@@ -9,6 +9,8 @@
 #[path = "Day3/part3_1.rs"] mod part3_1;
 #[path = "Day3/part3_2.rs"] mod part3_2;
 #[path = "Day4/part4_1.rs"] mod part4_1;
+#[path = "Day5/part5_1.rs"] mod part5_1;
+#[path = "Day5/part5_2.rs"] mod part5_2;
 
 use std::fs::{File};
 use std::io::{self, BufRead};
@@ -22,7 +24,7 @@ use std::borrow::Borrow;
 #[test]
 fn control(){
     let mut depths = common::common::read_file(&"input1.txt".to_string());
-    let count = crate::part1_1::count_increase(depths);
+    let count = part1_1::part1_1::count_increase(depths);
     assert_eq!(count,1342);
 }
     //DAY1 PART1 END
@@ -40,7 +42,7 @@ fn windowed_control(){
     //DAY2 PART1 START
 #[test]
 fn control_planned_course(){
-    let mut commands = common::read_file_as_string(&"input2.txt".to_string());
+    let mut commands = common::common::read_file_as_string(&"input2.txt".to_string());
     let (depth,horizontal) = part2_1::part2_1::evaluate_planned_course(commands);
     let multiplied = depth * horizontal;
     assert_eq!(multiplied,-1690020);
@@ -138,7 +140,36 @@ fn control_unmarked_sum_for_last_winner(){
     }
     //DAY4 PART2 END
 //DAY4 END
+//DAY5 START
+    //DAY5 PART1 START
+#[test]
+fn control_intersection_horizontal_vertical_lines(){
+        let lines = common::common::read_file_as_string(&"input5.txt".to_string());
+        let line_segments = part5_1::part5_1::read_line_segments(lines);
+        let mut sea_field = part5_1::part5_1::SeaField::new();
 
+        for line_segment in line_segments{
+            sea_field.mark_vertical_horizontal_line(&line_segment);
+        }
+        let count = sea_field.count_existing_intersection();
+        assert_eq!(count,7318);
+}
+    //DAY5 PART1 END
+    //DAY5 PART2 START
+#[test]
+fn control_intersection_horizontal_vertical_diagonal_lines(){
+        let lines = common::common::read_file_as_string(&"input5.txt".to_string());
+        let line_segments = part5_1::part5_1::read_line_segments(lines);
+        let mut sea_field = part5_1::part5_1::SeaField::new();
+
+        for line_segment in line_segments{
+            sea_field.mark_vertical_horizontal_diagonal_line(&line_segment);
+        }
+        let count = sea_field.count_existing_intersection();
+        assert_eq!(count,19939);
+    }
+    //DAY5 PART2 END
+//DAY5 END
 fn main() {
 
 }

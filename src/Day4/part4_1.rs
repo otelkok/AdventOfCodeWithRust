@@ -1,6 +1,5 @@
 pub mod part4_1{
     use crate::common;
-    use crate::read_file_as_string;
 
     #[derive(Copy,Clone,Debug,PartialEq)]
     pub struct BingoEntry{
@@ -72,7 +71,7 @@ pub mod part4_1{
         }
     }
     pub(crate) fn read_input_4(filename : &str) -> (Vec<u32>, Vec<BingoBoard>){
-        let mut lines : Vec<String> = read_file_as_string(&filename.to_string());
+        let mut lines : Vec<String> = common::common::read_file_as_string(&filename.to_string());
         let moves = lines[0].split(",").map(|value| value.parse::<u32>().unwrap()).collect();
         lines.remove(0);
         lines.retain(|line| !line.is_empty());
