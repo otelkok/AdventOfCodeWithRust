@@ -39,12 +39,10 @@ pub mod part5_2{
                 };
                 let mut i = to_mark.start_point.x as i32;
                 let mut y = to_mark.start_point.y as i32;
-                while i - iter_x != to_mark.end_point.x as i32 {
-                    while y - iter_y != to_mark.end_point.y as i32 {
-                        self.sea_field[i as usize][y as usize] += 1;
-                        y += iter_y;
-                        i += iter_x;
-                    }
+                while i - iter_x != to_mark.end_point.x as i32 && y - iter_y != to_mark.end_point.y as i32 {
+                    self.sea_field[i as usize][y as usize] += 1;
+                    y += iter_y;
+                    i += iter_x;
                 }
             }
         }

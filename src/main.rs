@@ -11,6 +11,8 @@
 #[path = "Day4/part4_1.rs"] mod part4_1;
 #[path = "Day5/part5_1.rs"] mod part5_1;
 #[path = "Day5/part5_2.rs"] mod part5_2;
+#[path = "Day6/part6_1.rs"] mod part6_1;
+#[path = "Day6/part6_2.rs"] mod part6_2;
 
 use std::fs::{File};
 use std::io::{self, BufRead};
@@ -19,6 +21,9 @@ use crate::part1_1::part1_1::count_increase;
 use crate::part4_1::part4_1::BingoBoard;
 
 use std::borrow::Borrow;
+use std::collections::HashMap;
+use crate::part6_1::part6_1::LanternFish;
+
 // DAY1 START
     //DAY1 PART1 START
 #[test]
@@ -170,6 +175,40 @@ fn control_intersection_horizontal_vertical_diagonal_lines(){
     }
     //DAY5 PART2 END
 //DAY5 END
+//DAY6 START
+    //DAY6 PART1 START
+#[test]
+fn control_lantern_fish_80_days(){
+        let lines = common::common::read_file_as_string(&"input6.txt".to_string());
+        let mut fish = part6_1::part6_1::read_input_6(lines);
+        for i in 0..80{
+            let mut new_fish = Vec::new();
+            for mut fsh in fish{
+                match fsh.pass_time(){
+                    Some(element) => {new_fish.push(fsh); new_fish.push(element);},
+                    _ => new_fish.push(fsh),
+                };
+            }
+            fish =  new_fish;
+        }
+        assert_eq!(fish.len(),394994);
+}
+    //DAY6 PART1 END
+    //DAY6 PART2 START
+#[test]
+fn control_lantern_fish_256_days(){
+        let lines = common::common::read_file_as_string(&"input6.txt".to_string());
+        let mut fish = part6_1::part6_1::read_input_6(lines);
+        let mut count = 0;
+        let mut answer_map = HashMap::new();
+        let mut map_ref = &mut answer_map;
+        for mut fsh in fish{
+            count += part6_2::part6_2::how_many_fish_after(256,&mut fsh,map_ref);
+        }
+        assert_eq!(count,1765974267455);
+    }
+    //DAY6 PART2 END
+//DAY6 END
 fn main() {
 
 }
