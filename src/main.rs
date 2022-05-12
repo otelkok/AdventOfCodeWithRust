@@ -13,6 +13,16 @@
 #[path = "Day5/part5_2.rs"] mod part5_2;
 #[path = "Day6/part6_1.rs"] mod part6_1;
 #[path = "Day6/part6_2.rs"] mod part6_2;
+#[path = "Day7/part7_1.rs"] mod part7_1;
+#[path = "Day7/part7_2.rs"] mod part7_2;
+#[path = "Day8/part8_1.rs"] mod part8_1;
+#[path = "Day8/part8_2.rs"] mod part8_2;
+#[path = "Day9/part9_1.rs"] mod part9_1;
+#[path = "Day9/part9_2.rs"] mod part9_2;
+#[path = "Day10/part10_1.rs"] mod part10_1;
+#[path = "Day10/part10_2.rs"] mod part10_2;
+#[path = "Day11/part11_1.rs"] mod part11_1;
+#[path = "Day11/part11_2.rs"] mod part11_2;
 
 use std::fs::{File};
 use std::io::{self, BufRead};
@@ -23,6 +33,9 @@ use crate::part4_1::part4_1::BingoBoard;
 use std::borrow::Borrow;
 use std::collections::HashMap;
 use crate::part6_1::part6_1::LanternFish;
+use crate::part8_2::part8_2::{FixedSevenSegmentMap, PotentialMatch};
+use crate::part8_2::part8_2::FixedSevenSegmentMap::ONE;
+use crate::part9_2::part9_2::Basin;
 
 // DAY1 START
     //DAY1 PART1 START
@@ -206,9 +219,184 @@ fn control_lantern_fish_256_days(){
             count += part6_2::part6_2::how_many_fish_after(256,&mut fsh,map_ref);
         }
         assert_eq!(count,1765974267455);
-    }
+}
     //DAY6 PART2 END
 //DAY6 END
-fn main() {
+//DAY7 START
+    //DAY7 PART1 START
+#[test]
+fn control_constant_crab_fuel(){
+        let lines = common::common::read_file_as_string(&"input7.txt".to_string());
+        let mut crabs = part7_1::part7_1::read_input_7(lines);
 
+        let (min_position,min_fuel)  = part7_1::part7_1::center_of_mass(crabs.clone());
+        assert_eq!(min_position,323);
+        assert_eq!(min_fuel,336701);
+}
+    //DAY7 PART1 END
+    //DAY7 PART2 START
+#[test]
+fn control_increasing_crab_fuel(){
+        let lines = common::common::read_file_as_string(&"input7.txt".to_string());
+        let mut crabs = part7_1::part7_1::read_input_7(lines);
+        let (min_position,min_fuel)  = part7_2::part7_2::center_of_mass_increasing(crabs.clone());
+        assert_eq!()(min_position,461);
+        assert_eq!()(min_fuel,95167302);
+    }
+    //DAY7 PART2 END
+//DAY7 END
+//DAY8 START
+    //DAY8 PART1 START
+#[test]
+fn control_1_4_7_8(){
+        let lines = common::common::read_file_as_string(&"input8.txt".to_string());
+        let mut map = part8_1::part8_1::read_input_8_seg_2(lines);
+        assert_eq!(map.get(&1_u8),118);
+        assert_eq!(map.get(&4_u8),143);
+        assert_eq!(map.get(&7_u8),136);
+        assert_eq!(map.get(&8_u8),142);
+        let sum =map.values().fold(0,|sum,element| sum + element);
+        assert_eq!(sum,539);
+}
+    //DAY8 PART1 END
+    //DAY8 PART2 START
+#[test]
+fn control_all_codes(){
+        let lines = common::common::read_file_as_string(&"input8.txt".to_string());
+        let entries = part8_2::part8_2::read_input_8_complete(lines);
+        let mut sum: u64 = 0;
+        for entry in entries{
+            let mut potential_match = PotentialMatch::new(entry.seg_1.clone());
+            potential_match.initial_belongings(entry.clone());
+            let mut solve = potential_match.imply_mapping_coding_possibility();
+            let solved = solve.solve_maze();
+            let decoder = solved.unwrap().to_decoded();
+            let decoded = decoder.decode(entry);
+            let number = decoded.iter().fold(0,|sum,element| (sum * 10) + element);
+            sum += number as u64;
+        }
+        assert_eq!(sum,1084606);
+    }
+    //DAY8 PART2 END
+//DAY8 END
+//DAY9 START
+    //DAY9 PART1 START
+#[test]
+fn control_risk_point(){
+    let lines = common::common::read_file_as_string(&"input9.txt".to_string());
+    let entries = part9_1::part9_1::read_input_9(lines);
+    let risk_point = part9_1::part9_1::risk_points(part9_1::part9_1::low_points(entries));
+    assert_eq!(risk_point,900);
+}
+    //DAY9 PART1 END
+    //DAY9 PART2 START
+fn control_basin_sizes(){
+        let lines = common::common::read_file_as_string(&"input9.txt".to_string());
+        let entries= part9_2::part9_2::read_input_9_as_map(lines);
+        let low_points = entries.low_points();
+        let basins = Basin::from_low_point(low_points,&entries);
+        let (mut index1, mut count1) = (0, 0);
+        let (mut index2, mut count2) = (0, 0);
+        let (mut index3, mut count3) = (0, 0);
+        for (index,basin) in basins.iter().enumerate(){
+            match basin.content.len(){
+                x if x > count1 => {
+                    index3 = index2;
+                    index2 = index1;
+                    index1 = index;
+                    count3 = count2;
+                    count2 = count1;
+                    count1 = x;
+                }
+                x if x > count2 => {
+                    index3 = index2;
+                    index2 = index;
+                    count3 = count2;
+                    count2 = x;
+                }
+                x if x > count3 => {
+                    index3 = index;
+                    count3 = x;
+                }
+                _ =>{},
+            }
+        }
+        let size1 = basins[index1].content.len();
+        let size2 = basins[index2].content.len();
+        let size3 = basins[index3].content.len();
+        assert_eq!(size1,105);
+        assert_eq!(size2,98);
+        assert_eq!(size3,96);
+        assert_eq!(size1*size2*size3,987840);
+    }
+    //DAY9 PART2 END
+//DAY9 END
+//DAY10 START
+    //DAY10 PART1 START
+#[test]
+fn control_corruption_point(){
+        let lines = common::common::read_file_as_string(&"input10.txt".to_string());
+        let corruptions= part10_1::part10_1::find_corrupted_characters(lines);
+        let mut sum = 0;
+        for corruption in corruptions{
+            match corruption{
+                ')' => sum += 3,
+                ']' => sum += 57 ,
+                '}' => sum += 1197,
+                '>' => sum += 25137,
+                _ => {}
+            }
+        }
+        assert_eq!(sum,370407);
+    }
+    //DAY10 PART1 END
+    //DAY10 PART2 START
+#[test]
+fn control_incomplete(){
+        let lines = common::common::read_file_as_string(&"input10.txt".to_string());
+        let mut removed_lines = Vec::new();
+        for line in lines{
+            if !part10_2::part10_2::is_line_corrupted(line.clone()){
+                removed_lines.push(line);
+            }
+        }
+        let mut sum : u64 = 0;
+        let mut sums = Vec::new();
+        let mut sub_sum:u64  = 0;
+        for line in removed_lines{
+            let to_append = part10_2::part10_2::fill_incomplete_line(part10_2::part10_2::remove_paired_closing_characters(line));
+            sub_sum = 0;
+            for character in to_append{
+                sub_sum *= 5;
+                match character{
+                    ')' => sub_sum+= 1,
+                    ']' => sub_sum+= 2,
+                    '}' => sub_sum+= 3,
+                    '>' => sub_sum+= 4,
+                    _ => {},
+                }
+            }
+            sum += sub_sum;
+            sums.push(sub_sum);
+        }
+        sums.sort();
+        let mid_element = sums[(sums.len() / 2) ];
+        assert_eq!(mid_element,3249889609);
+        assert_eq!(sum,350352132259);
+}
+    //DAY10 PART2 END
+//DAY10 END
+//DAY11 START
+    //DAY11 PART1 START
+    //DAY11 PART1 END
+    //DAY11 PART2 START
+    //DAY11 PART2 END
+//DAY11 END
+fn main() {
+        let lines = common::common::read_file_as_string(&"input_test.txt".to_string());
+        let mut game_map = part11_1::par11_1::read_input_11(lines);
+        for i in 0..1{
+            game_map.pass_step();
+        }
+        println!("Flash count:{}",game_map.flash_count);
 }
