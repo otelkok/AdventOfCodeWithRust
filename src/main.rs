@@ -2,27 +2,29 @@
 #![allow(unused)]
 
 #[path = "common.rs"] mod common;
-#[path = "Day1/part1_1.rs"] mod part1_1;
-#[path = "Day1/part1_2.rs"] mod part1_2;
-#[path = "Day2/part2_1.rs"] mod part2_1;
-#[path = "Day2/part2_2.rs"] mod part2_2;
-#[path = "Day3/part3_1.rs"] mod part3_1;
-#[path = "Day3/part3_2.rs"] mod part3_2;
-#[path = "Day4/part4_1.rs"] mod part4_1;
-#[path = "Day5/part5_1.rs"] mod part5_1;
-#[path = "Day5/part5_2.rs"] mod part5_2;
-#[path = "Day6/part6_1.rs"] mod part6_1;
-#[path = "Day6/part6_2.rs"] mod part6_2;
-#[path = "Day7/part7_1.rs"] mod part7_1;
-#[path = "Day7/part7_2.rs"] mod part7_2;
-#[path = "Day8/part8_1.rs"] mod part8_1;
-#[path = "Day8/part8_2.rs"] mod part8_2;
-#[path = "Day9/part9_1.rs"] mod part9_1;
-#[path = "Day9/part9_2.rs"] mod part9_2;
+#[path = "Day01/part1_1.rs"] mod part1_1;
+#[path = "Day01/part1_2.rs"] mod part1_2;
+#[path = "Day02/part2_1.rs"] mod part2_1;
+#[path = "Day02/part2_2.rs"] mod part2_2;
+#[path = "Day03/part3_1.rs"] mod part3_1;
+#[path = "Day03/part3_2.rs"] mod part3_2;
+#[path = "Day04/part4_1.rs"] mod part4_1;
+#[path = "Day05/part5_1.rs"] mod part5_1;
+#[path = "Day05/part5_2.rs"] mod part5_2;
+#[path = "Day06/part6_1.rs"] mod part6_1;
+#[path = "Day06/part6_2.rs"] mod part6_2;
+#[path = "Day07/part7_1.rs"] mod part7_1;
+#[path = "Day07/part7_2.rs"] mod part7_2;
+#[path = "Day08/part8_1.rs"] mod part8_1;
+#[path = "Day08/part8_2.rs"] mod part8_2;
+#[path = "Day09/part9_1.rs"] mod part9_1;
+#[path = "Day09/part9_2.rs"] mod part9_2;
 #[path = "Day10/part10_1.rs"] mod part10_1;
 #[path = "Day10/part10_2.rs"] mod part10_2;
 #[path = "Day11/part11_1.rs"] mod part11_1;
 #[path = "Day11/part11_2.rs"] mod part11_2;
+#[path = "Day12/part12_1.rs"] mod part12_1;
+#[path = "Day12/part12_2.rs"] mod part12_2;
 
 use std::fs::{File};
 use std::io::{self, BufRead};
@@ -41,7 +43,7 @@ use crate::part9_2::part9_2::Basin;
     //DAY1 PART1 START
 #[test]
 fn control(){
-    let mut depths = common::common::read_file(&"input1.txt".to_string());
+    let mut depths = common::common::read_file(&"Input/input1.txt".to_string());
     let count = part1_1::part1_1::count_increase(depths);
     assert_eq!(count,1342);
 }
@@ -50,7 +52,7 @@ fn control(){
 
 #[test]
 fn windowed_control(){
-    let mut depths = common::common::read_file(&"input1.txt".to_string());
+    let mut depths = common::common::read_file(&"Input/input1.txt".to_string());
     let count = crate::part1_2::part1_2::count_increase_window(depths);
     assert_eq!(count,1378);
 }
@@ -60,7 +62,7 @@ fn windowed_control(){
     //DAY2 PART1 START
 #[test]
 fn control_planned_course(){
-    let mut commands = common::common::read_file_as_string(&"input2.txt".to_string());
+    let mut commands = common::common::read_file_as_string(&"Input/input2.txt".to_string());
     let (depth,horizontal) = part2_1::part2_1::evaluate_planned_course(commands);
     let multiplied = depth * horizontal;
     assert_eq!(multiplied,-1690020);
@@ -70,7 +72,7 @@ fn control_planned_course(){
 
 #[test]
 fn control_planned_course_with_aim(){
-    let mut commands = common::common::read_file_as_string(&"input2.txt".to_string());
+    let mut commands = common::common::read_file_as_string(&"Input/input2.txt".to_string());
     let (depth,horizontal) = part2_2::part2_2::evaluate_planned_course_with_aim(commands);
     let multiplied = depth * horizontal;
     assert_eq!(multiplied,1408487760);
@@ -82,7 +84,7 @@ fn control_planned_course_with_aim(){
 
 #[test]
 fn control_gamma_epsilon(){
-    let numbers = common::common::read_file_as_string(&"input3.txt".to_string());
+    let numbers = common::common::read_file_as_string(&"Input/input3.txt".to_string());
     let (counts,line_count) = part3_1::part3_1::count_bit_for_digits(numbers);
     let (epsilon,gamma) = part3_1::part3_1::evaluate_epsilon_gamma(counts,line_count);
     assert_eq!(gamma,"001011101010");
@@ -97,7 +99,7 @@ fn control_gamma_epsilon(){
 
 #[test]
 fn control_o2_co2(){
-    let numbers = common::common::read_file_as_string(&"input3.txt".to_string());
+    let numbers = common::common::read_file_as_string(&"Input/input3.txt".to_string());
     let co2_numbers = numbers.clone();
     let o2_string = part3_2::part3_2::evaluate_o2_rating(numbers);
     let co2_string = part3_2::part3_2::evaluate_co2_rating(co2_numbers);
@@ -113,7 +115,7 @@ fn control_o2_co2(){
     //DAY4 PART1 START
 #[test]
 fn control_unmarked_sum(){
-        let (moves, mut boards) = part4_1::part4_1::read_input_4("input4.txt");
+        let (moves, mut boards) = part4_1::part4_1::read_input_4("Input/input4.txt");
         let mut finished= Option::None;
         let mut last_move = 0;
         for to_execute in moves{
@@ -132,7 +134,7 @@ fn control_unmarked_sum(){
     //DAY4 PART2 START
 #[test]
 fn control_unmarked_sum_for_last_winner(){
-        let (moves, mut boards) = part4_1::part4_1::read_input_4("input4.txt");
+        let (moves, mut boards) = part4_1::part4_1::read_input_4("Input/input4.txt");
         let mut finished= Option::None;
         let mut last_move = 0;
         let mut sum = 0;
@@ -162,7 +164,7 @@ fn control_unmarked_sum_for_last_winner(){
     //DAY5 PART1 START
 #[test]
 fn control_intersection_horizontal_vertical_lines(){
-        let lines = common::common::read_file_as_string(&"input5.txt".to_string());
+        let lines = common::common::read_file_as_string(&"Input/input5.txt".to_string());
         let line_segments = part5_1::part5_1::read_line_segments(lines);
         let mut sea_field = part5_1::part5_1::SeaField::new();
 
@@ -176,7 +178,7 @@ fn control_intersection_horizontal_vertical_lines(){
     //DAY5 PART2 START
 #[test]
 fn control_intersection_horizontal_vertical_diagonal_lines(){
-        let lines = common::common::read_file_as_string(&"input5.txt".to_string());
+        let lines = common::common::read_file_as_string(&"Input/input5.txt".to_string());
         let line_segments = part5_1::part5_1::read_line_segments(lines);
         let mut sea_field = part5_1::part5_1::SeaField::new();
 
@@ -192,7 +194,7 @@ fn control_intersection_horizontal_vertical_diagonal_lines(){
     //DAY6 PART1 START
 #[test]
 fn control_lantern_fish_80_days(){
-        let lines = common::common::read_file_as_string(&"input6.txt".to_string());
+        let lines = common::common::read_file_as_string(&"Input/input6.txt".to_string());
         let mut fish = part6_1::part6_1::read_input_6(lines);
         for i in 0..80{
             let mut new_fish = Vec::new();
@@ -210,7 +212,7 @@ fn control_lantern_fish_80_days(){
     //DAY6 PART2 START
 #[test]
 fn control_lantern_fish_256_days(){
-        let lines = common::common::read_file_as_string(&"input6.txt".to_string());
+        let lines = common::common::read_file_as_string(&"Input/input6.txt".to_string());
         let mut fish = part6_1::part6_1::read_input_6(lines);
         let mut count = 0;
         let mut answer_map = HashMap::new();
@@ -226,7 +228,7 @@ fn control_lantern_fish_256_days(){
     //DAY7 PART1 START
 #[test]
 fn control_constant_crab_fuel(){
-        let lines = common::common::read_file_as_string(&"input7.txt".to_string());
+        let lines = common::common::read_file_as_string(&"Input/input7.txt".to_string());
         let mut crabs = part7_1::part7_1::read_input_7(lines);
 
         let (min_position,min_fuel)  = part7_1::part7_1::center_of_mass(crabs.clone());
@@ -237,11 +239,11 @@ fn control_constant_crab_fuel(){
     //DAY7 PART2 START
 #[test]
 fn control_increasing_crab_fuel(){
-        let lines = common::common::read_file_as_string(&"input7.txt".to_string());
+        let lines = common::common::read_file_as_string(&"Input/input7.txt".to_string());
         let mut crabs = part7_1::part7_1::read_input_7(lines);
         let (min_position,min_fuel)  = part7_2::part7_2::center_of_mass_increasing(crabs.clone());
-        assert_eq!()(min_position,461);
-        assert_eq!()(min_fuel,95167302);
+        assert_eq!(min_position,461);
+        assert_eq!(min_fuel,95167302);
     }
     //DAY7 PART2 END
 //DAY7 END
@@ -249,12 +251,12 @@ fn control_increasing_crab_fuel(){
     //DAY8 PART1 START
 #[test]
 fn control_1_4_7_8(){
-        let lines = common::common::read_file_as_string(&"input8.txt".to_string());
+        let lines = common::common::read_file_as_string(&"Input/input8.txt".to_string());
         let mut map = part8_1::part8_1::read_input_8_seg_2(lines);
-        assert_eq!(map.get(&1_u8),118);
-        assert_eq!(map.get(&4_u8),143);
-        assert_eq!(map.get(&7_u8),136);
-        assert_eq!(map.get(&8_u8),142);
+        assert_eq!(map.remove(&1_u8).unwrap(),118);
+        assert_eq!(map.remove(&4_u8).unwrap(),143);
+        assert_eq!(map.remove(&8_u8).unwrap(),136);
+        assert_eq!(map.remove(&7_u8).unwrap(),142);
         let sum =map.values().fold(0,|sum,element| sum + element);
         assert_eq!(sum,539);
 }
@@ -262,7 +264,7 @@ fn control_1_4_7_8(){
     //DAY8 PART2 START
 #[test]
 fn control_all_codes(){
-        let lines = common::common::read_file_as_string(&"input8.txt".to_string());
+        let lines = common::common::read_file_as_string(&"Input/input8.txt".to_string());
         let entries = part8_2::part8_2::read_input_8_complete(lines);
         let mut sum: u64 = 0;
         for entry in entries{
@@ -283,15 +285,15 @@ fn control_all_codes(){
     //DAY9 PART1 START
 #[test]
 fn control_risk_point(){
-    let lines = common::common::read_file_as_string(&"input9.txt".to_string());
+    let lines = common::common::read_file_as_string(&"Input/input9.txt".to_string());
     let entries = part9_1::part9_1::read_input_9(lines);
     let risk_point = part9_1::part9_1::risk_points(part9_1::part9_1::low_points(entries));
-    assert_eq!(risk_point,900);
+    assert_eq!(risk_point,600);
 }
     //DAY9 PART1 END
     //DAY9 PART2 START
 fn control_basin_sizes(){
-        let lines = common::common::read_file_as_string(&"input9.txt".to_string());
+        let lines = common::common::read_file_as_string(&"Input/input9.txt".to_string());
         let entries= part9_2::part9_2::read_input_9_as_map(lines);
         let low_points = entries.low_points();
         let basins = Basin::from_low_point(low_points,&entries);
@@ -335,7 +337,7 @@ fn control_basin_sizes(){
     //DAY10 PART1 START
 #[test]
 fn control_corruption_point(){
-        let lines = common::common::read_file_as_string(&"input10.txt".to_string());
+        let lines = common::common::read_file_as_string(&"Input/input10.txt".to_string());
         let corruptions= part10_1::part10_1::find_corrupted_characters(lines);
         let mut sum = 0;
         for corruption in corruptions{
@@ -353,7 +355,7 @@ fn control_corruption_point(){
     //DAY10 PART2 START
 #[test]
 fn control_incomplete(){
-        let lines = common::common::read_file_as_string(&"input10.txt".to_string());
+        let lines = common::common::read_file_as_string(&"Input/input10.txt".to_string());
         let mut removed_lines = Vec::new();
         for line in lines{
             if !part10_2::part10_2::is_line_corrupted(line.clone()){
@@ -388,15 +390,30 @@ fn control_incomplete(){
 //DAY10 END
 //DAY11 START
     //DAY11 PART1 START
+fn control_flashing_count(){
+        let lines = common::common::read_file_as_string(&"Input/input11.txt".to_string());
+        let mut game_map = part11_1::part11_1::read_input_11(lines);
+        for i in 0..100{
+            game_map.pass_step(i);
+        }
+        assert_eq!(game_map.flash_count,1691);
+    }
     //DAY11 PART1 END
     //DAY11 PART2 START
+fn control_first_synchronization(){
+        let lines = common::common::read_file_as_string(&"Input/input11.txt".to_string());
+        let mut game_map = part11_1::part11_1::read_input_11(lines);
+        let mut i = 0;
+        loop{
+            game_map.pass_step(i);
+            if game_map.first_synchronization < u32::MAX{
+                break
+            }
+            i+=1;
+        }
+        assert_eq!(game_map.first_synchronization,216);
+    }
     //DAY11 PART2 END
 //DAY11 END
 fn main() {
-        let lines = common::common::read_file_as_string(&"input_test.txt".to_string());
-        let mut game_map = part11_1::par11_1::read_input_11(lines);
-        for i in 0..1{
-            game_map.pass_step();
-        }
-        println!("Flash count:{}",game_map.flash_count);
 }
