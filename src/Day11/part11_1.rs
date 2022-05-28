@@ -9,13 +9,10 @@ pub mod part11_1{
                 result.insert(Position::new((i,j)),Octopus::new(character.to_digit(10).unwrap() as u8));
             }
         }
-        println!("After read:");
         for i in 0..10 {
             for j in 0..10 {
                 let corresponding_position = Position::new((j,i));
-                print!("{}",result.map.get(&corresponding_position).unwrap().energy);
             }
-            println!();
         }
 
         result
@@ -109,13 +106,10 @@ pub mod part11_1{
                     self.fade_octopus(&corresponding_position);
                 }
             }
-            println!("map:");
             for i in 0..10 {
                 for j in 0..10 {
                     let corresponding_position = Position::new((j,i));
-                    print!("{}",self.map.get(&corresponding_position).unwrap().energy);
                 }
-                println!();
             }
 
         }

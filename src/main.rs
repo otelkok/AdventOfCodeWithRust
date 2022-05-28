@@ -25,6 +25,12 @@
 #[path = "Day11/part11_2.rs"] mod part11_2;
 #[path = "Day12/part12_1.rs"] mod part12_1;
 #[path = "Day12/part12_2.rs"] mod part12_2;
+#[path = "Day13/part13_1.rs"] mod part13_1;
+#[path = "Day13/part13_2.rs"] mod part13_2;
+#[path = "Day14/part14_1.rs"] mod part14_1;
+#[path = "Day14/part14_2.rs"] mod part14_2;
+#[path = "Day15/part15_1.rs"] mod part15_1;
+#[path = "Day15/part15_2.rs"] mod part15_2;
 
 use std::fs::{File};
 use std::io::{self, BufRead};
@@ -34,6 +40,10 @@ use crate::part4_1::part4_1::BingoBoard;
 
 use std::borrow::Borrow;
 use std::collections::HashMap;
+use std::{env, fs};
+use itertools::min;
+use crate::part13_1::part13_1::Paper;
+use crate::part14_1::part14_1::{Polymer, PolymerPair};
 use crate::part6_1::part6_1::LanternFish;
 use crate::part8_2::part8_2::{FixedSevenSegmentMap, PotentialMatch};
 use crate::part8_2::part8_2::FixedSevenSegmentMap::ONE;
@@ -292,6 +302,7 @@ fn control_risk_point(){
 }
     //DAY9 PART1 END
     //DAY9 PART2 START
+#[test]
 fn control_basin_sizes(){
         let lines = common::common::read_file_as_string(&"Input/input9.txt".to_string());
         let entries= part9_2::part9_2::read_input_9_as_map(lines);
@@ -390,6 +401,7 @@ fn control_incomplete(){
 //DAY10 END
 //DAY11 START
     //DAY11 PART1 START
+#[test]
 fn control_flashing_count(){
         let lines = common::common::read_file_as_string(&"Input/input11.txt".to_string());
         let mut game_map = part11_1::part11_1::read_input_11(lines);
@@ -400,6 +412,7 @@ fn control_flashing_count(){
     }
     //DAY11 PART1 END
     //DAY11 PART2 START
+#[test]
 fn control_first_synchronization(){
         let lines = common::common::read_file_as_string(&"Input/input11.txt".to_string());
         let mut game_map = part11_1::part11_1::read_input_11(lines);
@@ -415,5 +428,119 @@ fn control_first_synchronization(){
     }
     //DAY11 PART2 END
 //DAY11 END
+//DAY12 START
+    //DAY12 PART1 START
+#[test]
+fn test_possible_path(){
+        let lines = common::common::read_file_as_string(&"Input/input12.txt".to_string());
+        let paths = part12_1::part12_1::read_input_12(lines);
+        let mut game_map = part12_1::part12_1::construct_path_string(paths);
+        assert_eq!(game_map.len(),4659);
+    }
+    //DAY12 PART1 END
+    //DAY12 PART2 START
+#[test]
+fn test_possible_extended_path(){
+        let lines = common::common::read_file_as_string(&"Input/input12.txt".to_string());
+        let paths = part12_1::part12_1::read_input_12(lines);
+        let mut game_map = part12_2::part12_2::construct_path_string_extended(paths);
+        assert_eq!(game_map.len(),148962);
+    }
+    //DAY12 PART2 END
+//DAY12 END
+//DAY13 START
+    //DAY13 PART1 START
+#[test]
+fn control_after_first_dot(){
+        let lines = common::common::read_file_as_string(&"Input/input13.txt".to_string());
+        let (mut paper,fold_instructions) = part13_1::part13_1::read_input_13(lines);
+        paper = paper.execute_instruction(fold_instructions.get(0).unwrap().clone());
+        assert_eq!(paper.marked_dot(),701);
+    }
+    //DAY13 PART1 END
+    //DAY13 PART2 START
+    /* No tests for part2 since output is not directly parsable, answer is 'FPEKBEJL' */
+    //DAY13 PART2 END
+//DAY13 END
+//DAY14 START
+    //DAY14 PART1 START
+#[test]
+fn control_most_least_common_after_10_step(){
+        let lines = common::common::read_file_as_string(&"Input/input14.txt".to_string());
+        let (mut initial,insertion_rules) = part14_1::part14_1::read_input14(lines);
+        let mut polymer = PolymerPair::vec_from_string(initial);
+        for i in 0..10{
+            polymer.step(&insertion_rules);
+            polymer.refresh_cursor();
+        }
+        let count_map = polymer.count_chars();
+        let (mut min_count, mut max_count) = (usize::MAX, usize::MIN);
+        let (mut min_key, mut max_key) = (' ', ' ');
+        for (key,value) in count_map{
+            if value < min_count{
+                min_count = value;
+                min_key = key;
+            }
+            if value > max_count{
+                max_count = value;
+                max_key = key;
+            }
+        }
+        assert_eq!(max_count-min_count,2321);
+    }
+    //DAY14 PART1 END
+#[test]
+fn control_least_most_common_after_40_steps(){
+        let lines = common::common::read_file_as_string(&"Input/input14.txt".to_string());
+        let (mut initial,insertion_rules) = part14_1::part14_1::read_input14(lines);
+        let mut polymer = part14_2::part14_2::ExtendedPolymer::new(initial,insertion_rules);
+        for i in 0..40{
+            polymer.step();
+        }
+        let count_map = polymer.count_chars();
+        let (mut min_count, mut max_count) = (u64::MAX, u64::MIN);
+        let (mut min_key, mut max_key) = (' ', ' ');
+        for (key,value) in count_map{
+            if value < min_count{
+                min_count = value;
+                min_key = key;
+            }
+            if value > max_count{
+                max_count = value;
+                max_key = key;
+            }
+        }
+        assert_eq!(max_count-min_count,2399822193707);
+    }
+    //DAY14 PART2 START
+
+    //DAY14 PART2 END
+//DAY14 END
+//DAY15 START
+    //DAY15 PART1 START
+#[test]
+fn test_shortest_path(){
+        let lines = common::common::read_file_as_string(&"Input/input15.txt".to_string());
+        let game_map = part15_1::part15_1::GameMap::new(lines);
+        let mut risk_map = part15_1::part15_1::RiskMap::new(game_map);
+        let least_risk_1 = risk_map.evaluate_position((0,1));
+        let least_risk_2 = risk_map.evaluate_position((1,0));
+        let min = min(vec!(least_risk_1,least_risk_2)).unwrap();
+        assert_eq!(min,373);
+    }
+    //DAY15 PART1 END
+    //DAY15 PART2 START
+fn test_shortest_extended_path(){
+        let lines = common::common::read_file_as_string(&"Input/input15.txt".to_string());
+        let game_map = part15_1::part15_1::GameMap::new(lines);
+        let extended_game_map = part15_2::part15_2::ExtendedGameMap::new(game_map);
+        let mut risk_map = part15_2::part15_2::ExtendedRiskMap::new(extended_game_map);
+        let least_risk = risk_map.evaluate_position((0,0));
+        assert_eq!(least_risk,2876);
+    }
+    //DAY15 PART2 END
+//DAY15 END
+
 fn main() {
+
 }
